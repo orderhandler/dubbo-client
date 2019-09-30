@@ -1,0 +1,19 @@
+{
+    "name": "orderhandler/dubbo-client",
+    "description": "A client for dubbo",
+    "type": "library",
+    "license": "GNU General Public License v3.0",
+    "authors": [
+        {
+            "name": "Elrond",
+            "email": "guocheng@orderhandler.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Orderhandler\\Dubbo\\": "src/"
+        }
+    }
+
+}
