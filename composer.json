@@ -2,7 +2,7 @@
     "name": "orderhandler/dubbo-client",
     "description": "A client for dubbo",
     "type": "library",
-    "license": "GNU General Public License v3.0",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Elrond",
