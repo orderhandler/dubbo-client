@@ -9,10 +9,13 @@
             "email": "guocheng@orderhandler.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=5.6",
+        "ext-zookeeper": "0.6.4"
+    },
     "autoload": {
         "psr-4": {
-            "Orderhandler\\Dubbo\\": "src/"
+            "OrderHandler\\Dubbo\\": "src/"
         }
     }
 
