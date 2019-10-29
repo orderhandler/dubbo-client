@@ -7,19 +7,35 @@ use Orderhandler\Dubbo\DiscoverService\ServiceProvider;
 class DubboClientFactory
 {
 
-    private $adapters = [];
+    public $configure =null;
+
+    private $discoverMap = [];
+
+    private $serializerMap = [];
+
+    private $unserializerMap = [];
+
+    private $connectorMap = [];
+
+    private $logger = '';
 
     public function __construct($conf) {
+        $this->configure = new Configure($conf);
+        $this->logger = new LoggerInstance($this->configure->getLoggerConf());
+    }
 
-        $this->adapters = $this->initAdapters($conf);
+    private function init(){
 
     }
 
-
-    public function initAdapters($conf){
-
-
+    public function getSerializer($type){
+        if(!isset($this->serializerMap[$type])){
+            $this->serializerMap[$type] = new Se;
+        }
+        return $this->serializerMap[$type];
     }
+
+
     /**
      * Invoke service's method
      * @param $name method's name
@@ -36,7 +52,10 @@ class DubboClientFactory
     }
 
 
-    public static function getService($service, $conf = array()) {
+    public function makeService($service, $conf = array()) {
+        if(static::configure == null){
+            static::init();
+        }
         $registry = null;
         if (isset($conf['registry'])) {
             $registry = $conf['registry'];
@@ -46,55 +65,9 @@ class DubboClientFactory
             $version = $conf['version'];
         }
         //$service, $registry, $version
-        return new self($conf);
+        $client = new DubboClient($conf);
+        $client->setLggger($this->logger);
+        return $client;
     }
-
-
-
-
-
-
-
-
-//    /**
-//     * The cache of studly-cased words.
-//     *
-//     * @var array
-//     */
-//    protected static $studlyCache = [];
-//
-//    /**
-//     * @param string $name
-//     * @param array  $config
-//     *
-//     * @return \dubbo-client\Kernel\ServiceConnection
-//     */
-//    public static function make($name, array $config)
-//    {
-//        $namespace = self::studly($name);
-//        $application = "\\dubbo-client\\{$namespace}\\Application";
-//
-//        return new $application($config);
-//    }
-//
-//    /**
-//     * Convert a value to studly caps case.
-//     *
-//     * @param string $value
-//     *
-//     * @return string
-//     */
-//    public static function studly($value)
-//    {
-//        $key = $value;
-//
-//        if (isset(static::$studlyCache[$key])) {
-//            return static::$studlyCache[$key];
-//        }
-//
-//        $value = ucwords(str_replace(['-', '_'], ' ', $value));
-//
-//        return static::$studlyCache[$key] = str_replace(' ', '', $value);
-//    }
 
 }

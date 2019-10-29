@@ -12,10 +12,37 @@ namespace Orderhandler\Dubbo\ServiceConnection;
 class ServiceInvoke
 {
 
-    public function __construct($provider, $method, $args)
-    {
+    private $serializer = [];
 
+    private $connecror = [];
+
+    private $unserializer = [];
+
+    private $logger = [];
+
+    public function setLogger(LoggerInstance $logger){
+        $this->logger  = $logger;
+    }
+
+    public function __construct(LoggerInstance $logger, $provider)
+    {
+        $this->logger = $logger;
+    }
+
+    public function __call($method, $args){
         return $this->invoke($provider, $method, $args);
+    }
+
+    public function call($method, $args){
+        $this->logger->error($msg, $exception);
+        $this->logger->info($msg);
+
+        $connector->write($req);
+        $res = '';
+        $connector->read($res);
+
+        $this->logger->debug("reponse is : " . $res);
+        $result = $this->unserializer->exec($res);
     }
 
 
