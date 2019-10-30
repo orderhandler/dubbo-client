@@ -1,31 +1,49 @@
 <?php
 
-namespace Orderhandler\Dubbo;
+namespace OrderHandler\Dubbo;
 
-use Orderhandler\Dubbo\DiscoverService\ServiceProvider;
+use OrderHandler\Dubbo\DiscoverService\ServiceProvider;
+
+use OrderHandler\Dubbo\DubboClient;
+use OrderHandler\Dubbo\Configure;
+use OrderHandler\Dubbo\LoggerInstance;
+
 
 class DubboClientFactory
 {
 
     public $configure =null;
 
-    private $discoverMap = [];
+    private $discover = null;
 
-    private $serializerMap = [];
+    private $serializer = null;
 
-    private $unserializerMap = [];
+    private $unserializer = null;
 
-    private $connectorMap = [];
+    private $connector = null;
 
-    private $logger = '';
+    private $service = [];
+
+    private $logger = null;
 
     public function __construct($conf) {
         $this->configure = new Configure($conf);
         $this->logger = new LoggerInstance($this->configure->getLoggerConf());
+        $this->initDiscover($this->configure->getDiscoverConf());
+        $this->initSerialier($this->configure->getSerializerConf());
+        $this->initUnserialier($this->configure->getUnserializerConf());
     }
 
-    private function init(){
+    private function initSerialier($conf){
 
+    }
+    private function initUnserialier($conf){
+
+    }
+
+    private function initDiscover($conf){
+        $class = $conf['type'];
+        $this->discover = new $class($conf);
     }
 
     public function getSerializer($type){
@@ -35,39 +53,31 @@ class DubboClientFactory
         return $this->serializerMap[$type];
     }
 
-
-    /**
-     * Invoke service's method
-     * @param $name method's name
-     * @param $arguments arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments) {
-        $provider = $this->getProvider($this->service, $name);
-        if (empty($provider)) {
-            throw new \Exception('dubbo.providerNotFound');
-        }
-        $ret = $this->invoke($provider, $name, $arguments);
-        return json_decode($ret, true);
+    public static function make($service, $conf = []){
+        $factory = new DubboClientFactory($conf);
+        return $factory->makeService($service);
     }
 
+    public function makeService($service) {
 
-    public function makeService($service, $conf = array()) {
-        if(static::configure == null){
-            static::init();
-        }
-        $registry = null;
-        if (isset($conf['registry'])) {
-            $registry = $conf['registry'];
-        }
-        $version = null;
-        if (isset($conf['version'])) {
-            $version = $conf['version'];
-        }
-        //$service, $registry, $version
-        $client = new DubboClient($conf);
-        $client->setLggger($this->logger);
+        $provider = $this->discover->loadProvider($service) ;
+
+        $this->logger->debug("search service [{$service}] return : " . json_encode($provider));
+
+
+        $client = new DubboClient($provider, $this->configure->getClientOptions());
+        $client->setSerialzer($this->serializer);
+        $client->setUnserialzer($this->unserializer);
+        var_dump($client);
+        exit;
+
+
         return $client;
+
+       //$service, $registry, $version
+//      $client = new DubboClient($conf);
+//      $client->setLggger($this->logger);
+//      return $client;
     }
 
 }

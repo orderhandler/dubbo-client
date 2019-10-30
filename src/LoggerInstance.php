@@ -1,20 +1,22 @@
 <?php
+namespace OrderHandler\Dubbo;
 
 class LoggerInstance{
 
     private $adapter = null;
 
     public function __construct($loggerConfigure){
-        if(is_object($loggerConfigure['logger'])){
-            if($loggerConfigure['logger'] instanceof LoggerInterface){
-                $this->adapter = $loggerConfigure['logger'];
+        if(is_object($loggerConfigure['class'])){
+            if($loggerConfigure['class'] instanceof LoggerInterface){
+                $this->adapter = $loggerConfigure['class'];
             }else{
-                throw new \RuntimeException("logger" . get_class($loggerConfigure['logger']) . " is not instanceof LoggerInterface");
+                throw new \RuntimeException("logger" . get_class($loggerConfigure) . " is not instanceof LoggerInterface");
             }
-        }elseif(is_string($loggerConfigure['logger'])){
-            $logger = new $loggerConfigure['logger'];
+        }elseif(is_string($loggerConfigure['class'])){
+            $this->adapter =new $loggerConfigure['class'];
+        }else{
+            throw new \InvalidArgumentException('logger configure error');
         }
-        throw new \InvalidArgumentException('logger configure error');
     }
 
     public function debug($msg){
