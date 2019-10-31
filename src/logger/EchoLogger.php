@@ -5,15 +5,15 @@ use OrderHandler\Dubbo\LoggerInterface;
 class EchoLogger implements LoggerInterface{
 
     public function debug($msg){
-        echo $msg . "\n";
+        echo $msg . "\n\n";
     }
 
     public function info($msg){
-        echo $msg . "\n";
+        echo $msg . "\n\n";
     }
 
     public function warning($msg){
-        echo $msg . "\n";
+        echo $msg . "\n\n";
     }
 
     public function error($msg, $exception = null){
@@ -21,6 +21,7 @@ class EchoLogger implements LoggerInterface{
         if($exception != null ){
             echo $exception->__toString();
         }
+        echo "\n";
     }
 
 
