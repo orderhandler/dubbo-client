@@ -9,6 +9,8 @@ class DubboClient{
 
     private $unserializer = null;
 
+    private $connector = null;
+
     private $provider = [];
 
     private $options = [];
@@ -19,6 +21,10 @@ class DubboClient{
 
     }
 
+    public function setLogger($logger){
+        $this->logger = $logger;
+    }
+
     public function setSerializer($serializer){
         $this->serializer = $serializer;
     }
@@ -27,9 +33,20 @@ class DubboClient{
         $this->unserializer = $unserializer;
     }
 
+    public function setConnector($connector){
+        $this->connector = $connector;
+    }
 
     public function __call($method, $args){
+        $provider = $this->provider;
+        $options = $this->options;
 
+        $this->logger->debug("call dubbo rpc {$method}, with provider " . json_encode($provider) . ' with params ' . json_encode($args));
+        $requestContent = $this->serializer->encode($method, $args, $provider, $options);
+        $this->logger->debug("call dubbo provider : " .json_encode($provider). " with requestContent : " . $requestContent);
+        $responseContent = $this->connector->send($requestContent);
+        $this->logger->debug("call dubbo provider : " .json_encode($provider). " with responseContent : " . $responseContent);
+        return $this->unserializer->decode($responseContent);
     }
 
 

@@ -14,10 +14,19 @@ class Configure{
             'options' => [],
         ],
         'serializer' => [
-            'class' => \OrderHandler\Dubbo\Logger\NoOutputLogger::class,
+            'class' => \OrderHandler\Dubbo\Serializer\TcpInvokeSerializer::class,
         ],
         'unserializer' => [
-            'class' => \OrderHandler\Dubbo\Logger\NoOutputLogger::class,
+            'class' => \OrderHandler\Dubbo\Unserializer\TcpInvokeUnserializer::class,
+        ],
+        'connector' => [
+            'class' => \OrderHandler\Dubbo\Connector\SwooleTCPClient::class,
+            'config' => [
+                'open_eof_check' => true,
+                'package_eof' => 'dubbo>',
+                'package_max_length' => 1024 * 1024 * 8,
+                'socket_buffer_size' => 1024 * 1024 * 8,
+            ],
         ],
         'options' => [
             'version' => null,
@@ -47,5 +56,16 @@ class Configure{
         return $this->config['options'];
     }
 
+    public function getSerializerConf(){
+        return $this->config['serializer'];
+    }
+
+    public function getUnserializerConf(){
+        return $this->config['unserializer'];
+    }
+
+    public function getConnectorConfig(){
+        return $this->config['connector'];
+    }
 }
 

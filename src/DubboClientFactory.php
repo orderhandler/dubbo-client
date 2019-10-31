@@ -35,22 +35,17 @@ class DubboClientFactory
     }
 
     private function initSerialier($conf){
-
+        $className = $conf['class'];
+        $this->serializer =  new $className($conf);
     }
     private function initUnserialier($conf){
-
+        $className = $conf['class'];
+        $this->unserializer =  new $className($conf);
     }
 
     private function initDiscover($conf){
         $class = $conf['type'];
         $this->discover = new $class($conf);
-    }
-
-    public function getSerializer($type){
-        if(!isset($this->serializerMap[$type])){
-            $this->serializerMap[$type] = new Se;
-        }
-        return $this->serializerMap[$type];
     }
 
     public static function make($service, $conf = []){
@@ -66,11 +61,10 @@ class DubboClientFactory
 
 
         $client = new DubboClient($provider, $this->configure->getClientOptions());
-        $client->setSerialzer($this->serializer);
-        $client->setUnserialzer($this->unserializer);
-        var_dump($client);
-        exit;
-
+        $client->setLogger($this->logger);
+        $client->setSerializer($this->serializer);
+        $client->setUnserializer($this->unserializer);
+        $client->setConnector($this->loadConnector($provider, $this->configure->getClientOptions(), $this->configure->getConnectorConfig()));
 
         return $client;
 
@@ -78,6 +72,13 @@ class DubboClientFactory
 //      $client = new DubboClient($conf);
 //      $client->setLggger($this->logger);
 //      return $client;
+    }
+
+    public function loadConnector($provider, $options, $config){
+        $className = $config['class'];
+        $connector = new $className($provider, $options, $config);
+        $this->connector = $connector;
+        return $this->connector;
     }
 
 }
