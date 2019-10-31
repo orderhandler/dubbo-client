@@ -11,7 +11,12 @@ class TcpInvokeSerializer{
     }
 
     public function encode($method, $args, $provider, $options){
-        $cmd = sprintf("invoke %s.%s(%s)", $provider['options']['interface'], $method, json_encode($args));
+        $argsString = [];
+        foreach($args as $arg){
+            $argsString[] = json_encode($arg);
+        }
+
+        $cmd = sprintf("invoke %s.%s(%s)", $provider['options']['interface'], $method, implode(',', $argsString));
 
         return $cmd;
     }

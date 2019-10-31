@@ -12,7 +12,11 @@ $config = [
         'options' => [
             'charset' => 'utf-8'
         ],
-    ]
+    ],
+    'logger' => [
+        'class' => \OrderHandler\Dubbo\Logger\EchoLogger::class,
+        'options' => [],
+    ],
 
 ];
 
