@@ -13,11 +13,15 @@ class TcpInvokeUnserializer{
     }
 
     /***
-     * @param $responseContent
-     * @return mixed
-     * @throws \RuntimeException
+     * 获取响应报文，与dubbo的回复报文对比，取出返回的json内容
+     * 解析json。
+     * 如果报文中带有异常堆栈信息，直接抛出异常，附带内容。
+     * 如果需要对异常进行处理，直接改造这段内容
+     * TODO 异常处理注入点
      *
-     * 调用结果处理，正常返回Array
+     * @param string $responseContent dubbo服务返回报文
+     * @return array
+     * @throws \RuntimeException
      */
     public function decode($responseContent){
         $ret= $responseContent;
