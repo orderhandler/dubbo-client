@@ -16,7 +16,7 @@ class DubboClient{
 
     private $connector = null;
 
-    private $logger;
+    private $logger = null;
 
     private $provider = [];
 
