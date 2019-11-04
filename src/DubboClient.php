@@ -3,6 +3,11 @@
 namespace OrderHandler\Dubbo;
 
 
+/***
+ * Class DubboClient
+ * @package OrderHandler\Dubbo
+ *
+ */
 class DubboClient{
 
     private $serializer = null;
@@ -10,6 +15,8 @@ class DubboClient{
     private $unserializer = null;
 
     private $connector = null;
+
+    private $logger;
 
     private $provider = [];
 
@@ -37,6 +44,13 @@ class DubboClient{
         $this->connector = $connector;
     }
 
+
+    /***
+     * @param $method
+     * @param $args
+     * @return mixed
+     *
+     */
     public function __call($method, $args){
         $provider = $this->provider;
         $options = $this->options;

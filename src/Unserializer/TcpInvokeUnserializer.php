@@ -12,6 +12,13 @@ class TcpInvokeUnserializer{
         $this->config = $config;
     }
 
+    /***
+     * @param $responseContent
+     * @return mixed
+     * @throws \RuntimeException
+     *
+     * 调用结果处理，正常返回Array
+     */
     public function decode($responseContent){
         $ret= $responseContent;
         if(strstr($ret, DubboContent::DUBBO_NORMAL_END_FLAG)){

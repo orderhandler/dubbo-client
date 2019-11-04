@@ -5,6 +5,15 @@ class LoggerInstance{
 
     private $adapter = null;
 
+    /**
+     * LoggerInstance constructor.
+     * @param $loggerConfigure
+     *
+     * @throws \RuntimeException  class must instanceof LoggerInterface
+     * @throws \InvalidArgumentException
+     *
+     */
+
     public function __construct($loggerConfigure){
         if(is_object($loggerConfigure['class'])){
             if($loggerConfigure['class'] instanceof LoggerInterface){

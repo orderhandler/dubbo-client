@@ -8,7 +8,11 @@ use OrderHandler\Dubbo\DubboClient;
 use OrderHandler\Dubbo\Configure;
 use OrderHandler\Dubbo\LoggerInstance;
 
-
+/**
+ * Class DubboClientFactory
+ * @package OrderHandler\Dubbo
+ *
+ */
 class DubboClientFactory
 {
 
@@ -26,6 +30,7 @@ class DubboClientFactory
 
     private $logger = null;
 
+
     public function __construct($conf) {
         $this->configure = new Configure($conf);
         $this->logger = new LoggerInstance($this->configure->getLoggerConf());
@@ -34,25 +39,58 @@ class DubboClientFactory
         $this->initUnserialier($this->configure->getUnserializerConf());
     }
 
+    /**
+     * class TcpInvokeSerializer instantiate
+     *
+     * @param $conf
+     */
     private function initSerialier($conf){
         $className = $conf['class'];
         $this->serializer =  new $className($conf);
     }
+
+    /**
+     *
+     * @param $conf
+     * class TcpInvokeUnserializer instantiate
+     *
+     */
     private function initUnserialier($conf){
         $className = $conf['class'];
         $this->unserializer =  new $className($conf);
     }
 
+    /**
+     * @param $conf
+     * class ZookeeperDiscover instantiate
+     */
     private function initDiscover($conf){
         $class = $conf['type'];
         $this->discover = new $class($conf);
     }
 
+
+    /**
+     * @param $service
+     * @param array $conf
+     * @return \OrderHandler\Dubbo\DubboClient
+     *
+     * @example $invoke = DubboClientFactory::make($service, $conf);
+     *
+     *
+     */
     public static function make($service, $conf = []){
         $factory = new DubboClientFactory($conf);
         return $factory->makeService($service);
     }
 
+
+    /**
+     * @param $service
+     * @return \OrderHandler\Dubbo\DubboClient
+     *
+     * 调用dubbo服务
+     */
     public function makeService($service) {
 
         $provider = $this->discover->loadProvider($service) ;
@@ -60,6 +98,7 @@ class DubboClientFactory
         $this->logger->debug("search service [{$service}] return : " . json_encode($provider));
 
 
+        //初始化DubboClient
         $client = new DubboClient($provider, $this->configure->getClientOptions());
         $client->setLogger($this->logger);
         $client->setSerializer($this->serializer);
@@ -74,6 +113,10 @@ class DubboClientFactory
 //      return $client;
     }
 
+    /**
+     * class SwooleTCPClient instantiate
+     *
+     */
     public function loadConnector($provider, $options, $config){
         $className = $config['class'];
         $connector = new $className($provider, $options, $config);

@@ -19,6 +19,12 @@ class SwooleTCPClient{
     }
 
 
+    /***
+     * @param $requestContent
+     * @return mixed
+     *
+     * tcp invoke
+     */
     public function send($requestContent){
         $provider = $this->provider;
         if($this->conn == null  || !$this->conn->isConnected()){
