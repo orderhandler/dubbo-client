@@ -2,6 +2,12 @@
 
 namespace OrderHandler\Dubbo;
 
+/**
+ * Class Configure
+ * @package OrderHandler\Dubbo
+ *
+ * 初始化dubbo配置
+ */
 class Configure{
 
     private $defaultConfig = [

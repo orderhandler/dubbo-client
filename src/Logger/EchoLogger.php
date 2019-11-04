@@ -2,6 +2,12 @@
 namespace OrderHandler\Dubbo\Logger;
 use OrderHandler\Dubbo\LoggerInterface;
 
+
+/***
+ * Class EchoLogger
+ * @package OrderHandler\Dubbo\Logger
+ *
+ */
 class EchoLogger implements LoggerInterface{
 
     public function debug($msg){

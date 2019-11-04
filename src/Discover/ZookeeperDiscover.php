@@ -13,6 +13,12 @@ class ZookeeperDiscover{
         $this->conf = $discoverConfig;
     }
 
+    /**
+     * @param $name
+     * @return bool|mixed
+     *
+     * service discover
+     */
     public function loadProvider($name){
         if(is_null($this->zookeeper)){
             $this->zookeeper = new \Zookeeper($this->conf['url']);
