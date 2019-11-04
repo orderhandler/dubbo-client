@@ -38,7 +38,9 @@ class SwooleTCPClient{
     }
 
     public function __destruct(){
-
+        if($this->conn != null || $this->conn->isConnected()){
+            $this->conn->close();
+        }
     }
 
 }
