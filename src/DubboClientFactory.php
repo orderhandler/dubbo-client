@@ -40,9 +40,10 @@ class DubboClientFactory
     }
 
     /**
-     * class TcpInvokeSerializer instantiate
      *
+     * 默认实例化class TcpInvokeSerializer
      * @param $conf
+     *
      */
     private function initSerialier($conf){
         $className = $conf['class'];
@@ -50,9 +51,8 @@ class DubboClientFactory
     }
 
     /**
-     *
+     * 默认实例化class TcpInvokeUnserializer
      * @param $conf
-     * class TcpInvokeUnserializer instantiate
      *
      */
     private function initUnserialier($conf){
@@ -61,8 +61,8 @@ class DubboClientFactory
     }
 
     /**
-     * @param $conf
-     * class ZookeeperDiscover instantiate
+     * 默认实例化class ZookeeperDiscover
+     *
      */
     private function initDiscover($conf){
         $class = $conf['type'];
@@ -71,6 +71,7 @@ class DubboClientFactory
 
 
     /**
+     *
      * @param $service
      * @param array $conf
      * @return \OrderHandler\Dubbo\DubboClient

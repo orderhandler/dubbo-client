@@ -6,10 +6,11 @@ class LoggerInstance{
     private $adapter = null;
 
     /**
-     * LoggerInstance constructor.
-     * @param $loggerConfigure
      *
-     * @throws \RuntimeException  class must instanceof LoggerInterface
+     * 如果使用自定义Logger类必须属于 LoggerInterface 否则报错
+     *
+     * @param $loggerConfigure
+     * @throws \RuntimeException
      * @throws \InvalidArgumentException
      *
      */
