@@ -21,7 +21,7 @@ class SwooleTCPClient{
 
     /***
      * @param $requestContent
-     * @return mixed
+     * @return array
      *
      * tcp invoke
      */
@@ -44,7 +44,7 @@ class SwooleTCPClient{
     }
 
     public function __destruct(){
-        if($this->conn != null || $this->conn->isConnected()){
+        if($this->conn != null && $this->conn->isConnected()){
             $this->conn->close();
         }
     }
