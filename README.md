@@ -34,8 +34,6 @@ var_dump($res);
 
 ## 其它说明
 
-1.目前没有增加dubbo各种协议。但是后续有计划补全
-1.后期计划做个generator，可以根据接口直接生成对应的sdk，这样就不需要每次都加入classname和servicename了。但是还没排期
-1.配置内容有很多，在``src/Configure.php``中可以看到默认项目
-
-
+- 目前没有增加dubbo各种协议。但是后续有计划补全
+- 后期计划做个generator，可以根据接口直接生成对应的sdk，这样就不需要每次都加入classname和servicename了。但是还没排期
+- 配置内容有很多，在``src/Configure.php``中可以看到默认项目
