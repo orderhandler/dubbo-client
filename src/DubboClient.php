@@ -46,6 +46,8 @@ class DubboClient{
 
 
     /***
+     * 从服务发现中心获取服务提供者信息对服务器做报文交换
+     *
      * @param $method
      * @param $args
      * @return mixed

@@ -9,24 +9,62 @@ class ZookeeperDiscover{
 
     private $zookeeper = null;
 
+    /**
+     * ZookeeperDiscover constructor.
+     * @param $discoverConfig 服务注册中心地址
+     *
+     */
     public function __construct($discoverConfig){
         $this->conf = $discoverConfig;
     }
 
     /**
-     * @param $name
-     * @return bool|mixed
      *
-     * service discover
+     * 从服务发现中心查找服务提供者的IP，端口号
+     *
+     * @param $name
+     * @return array
+     *
      */
-    public function loadProvider($name){
+    public function loadProvider($name)
+    {
+
         if(is_null($this->zookeeper)){
             $this->zookeeper = new \Zookeeper($this->conf['url']);
         }
         $path = sprintf('/dubbo/%s/providers', $name);
         $rows = $this->zookeeper->getChildren($path);
+
+        $providers = $this->dataCompose($rows);
+
+        $num = count($providers);
+        if ($num == 0) {
+
+            throw new \RuntimeException("service not found");
+        }
+        if ($num > 1) {
+
+            $provider = $this->loadBalance($providers);
+        } else {
+            $provider = $providers[0];
+        }
+
+        return $provider;
+    }
+
+
+    /**
+     * 处理服务发现中心获取到的服务提供者信息
+     *
+     * @param $data
+     * @return array
+     *
+     */
+    private function dataCompose($data)
+    {
+
         $providers = [];
-        foreach ($rows as $row) {
+        foreach ($data as $row) {
             $info = parse_url(rawurldecode($row));
 
             $options = [];
@@ -38,22 +76,23 @@ class ZookeeperDiscover{
             $info['options']['methods'] = explode(',', $info['options']['methods']);
             $providers[] = $info;
         }
-        $num = count($providers);
-        if ($num == 0) {
-            return false;
-        }
-        if ($num > 1) {
-            $index = mt_rand(0, $num - 1);
-            $provider = $providers[$index];
-        } else {
-            $provider = $providers[0];
-        }
-        return $provider;
+
+        return $providers;
     }
 
-//  public function random($size){
+    /**
+     *
+     * 如果发现多个服务则做负载均衡
+     *
+     * @param $providers
+     * @return array
+     */
+    private function loadBalance($providers){
 
-//      return time() % $size;
-//  }
+        $index = mt_rand(0, count($providers) - 1);
+        $provider = $providers[$index];
+
+        return $provider;
+    }
 
 }

@@ -10,6 +10,16 @@ class TcpInvokeSerializer{
         $this->config = $config;
     }
 
+    /**
+     * 请求数据序列化
+     *
+     * @param $method
+     * @param $args
+     * @param $provider
+     * @param $options
+     * @return string
+     *
+     */
     public function encode($method, $args, $provider, $options){
         $argsString = [];
         foreach($args as $arg){

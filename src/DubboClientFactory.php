@@ -41,7 +41,6 @@ class DubboClientFactory
 
     /**
      *
-     * 默认实例化class TcpInvokeSerializer
      * @param $conf
      *
      */
@@ -51,7 +50,7 @@ class DubboClientFactory
     }
 
     /**
-     * 默认实例化class TcpInvokeUnserializer
+     *
      * @param $conf
      *
      */

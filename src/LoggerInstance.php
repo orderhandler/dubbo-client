@@ -7,7 +7,9 @@ class LoggerInstance{
 
     /**
      *
-     * 如果使用自定义Logger类必须属于 LoggerInterface 否则报错
+     * 为了方便使用者能够接入自己的日志体系，这里留了一个日志配置
+     * 可以传入一个对象或者类名
+     * 如果是类名将实例化该类，如果是对象将直接引用
      *
      * @param $loggerConfigure
      * @throws \RuntimeException
